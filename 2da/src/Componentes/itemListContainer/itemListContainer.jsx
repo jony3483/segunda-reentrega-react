@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import Item from "../item/item"
 import { Spin } from 'antd'
 import { useParams } from "react-router-dom"
+import styles from '../styles.module.css'
 
 
 const ItemListContainer =() => {
@@ -27,7 +28,7 @@ const ItemListContainer =() => {
     },[categoryId])
   
     return(
-        <>
+        <div className={styles.containerlist}>
         {products.length > 0 ? (
             <>
                 {products.map((prod, index) => <Item key={index} producto={prod} /> )}
@@ -35,7 +36,7 @@ const ItemListContainer =() => {
         ) : (
             <Spin />
         )}
-        </>
+        </div>
     )
 }
 

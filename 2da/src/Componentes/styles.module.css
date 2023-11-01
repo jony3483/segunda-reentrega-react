@@ -38,3 +38,9 @@ p{
 .item img{
     width: 100px;
 }
+
+.containerlist{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
