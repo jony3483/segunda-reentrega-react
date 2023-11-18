@@ -3,6 +3,11 @@ import { useParams } from "react-router-dom"
 import { Link } from "react-router-dom"
 import ItemCount from "../itemCount/itemCount"
 import styles from '../styles.module.css'
+import { getDoc, doc} from "firebase/firestore"
+import { db } from "../../firebase/client"
+import { Button } from "antd"
+import ItemDetail from "./itemDetail"
+
 
 const ItemDetailContainer = () => {
 
@@ -10,29 +15,23 @@ const ItemDetailContainer = () => {
 
     const {id} = useParams()
     
-
+    //firebase
     useEffect(() => {
-    
-    fetch(`https://fakestoreapi.com/products/${id}`)
-            .then(res=>res.json())
-            .then(json=> {
-                setProducto(json)
-                console.log(json)
-            })
-            .catch(error => console.error(error))
-            
+        const productRef = doc(db, "products", id)
+        getDoc(productRef)
+        .then(snapshot => {
+            if(snapshot.exists()){
+                setProducto({
+                    id: snapshot.id,
+                    ...snapshot.data()
+                })
+            }
+        })
+        .catch(e => console.error(e))
         },[id])
 
     return(
-        <div className={styles.card}>
-            <img src={producto?.image} />
-            <h3>{producto?.title}</h3>
-            <h5>sku: {producto?.id}</h5>
-            <h4>USD {producto?.price}$</h4>
-            <ItemCount />
-            <p>{producto?.description}</p>
-            <Link to={`/`}>Volver a la  Tienda</Link>
-        </div>
+        < ItemDetail producto={producto} />
     )
 }
 

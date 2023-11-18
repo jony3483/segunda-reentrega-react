@@ -3,30 +3,24 @@ import Item from "../item/item"
 import { Spin } from 'antd'
 import { useParams } from "react-router-dom"
 import styles from '../styles.module.css'
+import { collection, doc, getDoc, getDocs, query, where} from "firebase/firestore"
+import { db } from "../../firebase/client"
 
 
 const ItemListContainer =() => {
 
     const [products, setProducts] = useState([])
 
-    const {categoryId} = useParams()
-
-
-
     useEffect(() => {
-        const url = categoryId ? `https://fakestoreapi.com/products/category/${categoryId}` : `https://fakestoreapi.com/products`
-        fetch(url)
-            .then(res=>res.json())
-            .then(json=>{
-                console.log(json)
-                setProducts(json)
-            })
-            .catch(error => console.error(error))
 
-
-
-    },[categoryId])
-  
+        const productsRef = collection(db, "products")
+    
+        getDocs(productsRef)
+        .then(snapshot => {
+            setProducts(snapshot.docs.map(doc => ({id: doc.id, ...doc.data()})))
+        })
+        .catch(e => console.error(e))
+    },[])
     return(
         <div className={styles.containerlist}>
         {products.length > 0 ? (

@@ -9,10 +9,9 @@ import styles from '../styles.module.css'
 const NavBar = () => {
 
     const arrayDeCategorias = [           
-        "electronics",
-        "jewelery",
-        "men's clothing",
-        "women's clothing"
+        "Alimento",
+        "Ropa",
+        "Camas"
     ]
 
     return (
